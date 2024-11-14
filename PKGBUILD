@@ -4,19 +4,19 @@
 _pkgname=actual
 _Pkgname=Actual
 
-pkgname="${_pkgname}"-appimage
-pkgver=0.0.145
+pkgname=${_pkgname}-appimage
+pkgver=v24.11.0
 pkgrel=1
-pkgdesc="Actual is a super fast privacy-focused app for managing your finances."
+pkgdesc="Actual is a local-first personal finance tool. It is 100% free and open-source, written in NodeJS, it has a synchronization element so that all your changes can move between devices without any heavy lifting."
 arch=('x86_64')
-url="https://actualbudget.com/"
-license=('custom:Commercial')
+url="https://actualbudget.org/"
+license=('MIT')
 depends=('zlib' 'hicolor-icon-theme')
 options=(!strip)
-_appimage="${_Pkgname}-${pkgver}-x86_64.AppImage"
-source_x86_64=("${_appimage}::https://github.com/actualbudget/releases/releases/download/${pkgver}/${_Pkgname}-${pkgver}-x86_64.AppImage")
+_appimage="${_Pkgname}-linux.AppImage"
+source_x86_64=("${_appimage}::https://github.com/actualbudget/${_pkgname}/releases/download/${pkgver}/${_appimage}")
 noextract=("${_appimage}")
-sha256sums_x86_64=('74d0aaaa49b4c393dfff419d8485cc16c2694d03ba3117d5a6a36a72d15da065')
+sha256sums_x86_64=('f14211bc6df3cd57b25f7eaf6e2a6ecb0bed089fa50fd8460830b504d3793c35')
 
 prepare() {
     chmod +x "${_appimage}"
@@ -26,17 +26,17 @@ prepare() {
 build() {
     # Adjust .desktop so it will work outside of AppImage container
     sed -i -E "s|Exec=AppRun|Exec=env DESKTOPINTEGRATION=false /usr/bin/${_pkgname}|"\
-        "squashfs-root/${_pkgname}.desktop"
+        "squashfs-root/desktop-electron.desktop"
     # Fix permissions; .AppImage permissions are 700 for all directories
     chmod -R a-x+rX squashfs-root/usr
 }
 
 package() {
     # AppImage
-    install -Dm755 "${srcdir}/${_appimage}" "${pkgdir}/opt/${pkgname}/${pkgname}.AppImage"
+    install -Dm755 "${srcdir}/${_appimage}" "${pkgdir}/opt/${_pkgname}/${_Pkgname}.AppImage"
 
     # Desktop file
-    install -Dm644 "${srcdir}/squashfs-root/${_pkgname}.desktop"\
+    install -Dm644 "${srcdir}/squashfs-root/desktop-electron.desktop"\
             "${pkgdir}/usr/share/applications/${_pkgname}.desktop"
 
     # Icon images
@@ -45,5 +45,5 @@ package() {
 
     # Symlink executable
     install -dm755 "${pkgdir}/usr/bin"
-    ln -s "/opt/${pkgname}/${pkgname}.AppImage" "${pkgdir}/usr/bin/${_pkgname}"
+    ln -s "/opt/${_pkgname}/${_Pkgname}.AppImage" "${pkgdir}/usr/bin/${_pkgname}"
 }
