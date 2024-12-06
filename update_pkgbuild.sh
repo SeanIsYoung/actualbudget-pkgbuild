@@ -19,8 +19,12 @@ SHA256SUM=$(sha256sum $APPIMAGE_NAME | awk '{ print $1 }')
 
 # Update the PKGBUILD file
 sed -i "s/pkgver=.*/pkgver=$LATEST_RELEASE/" $PKGBUILD_PATH
+sed -i "s/pkgrel=.*/pkgrel=1/" $PKGBUILD_PATH
 sed -i "s/sha256sums_x86_64=('.*')/sha256sums_x86_64=('$SHA256SUM')/" $PKGBUILD_PATH
+
+# Update the .SRCINFO file
 sed -i "s/pkgver = .*/pkgver = $LATEST_RELEASE/" $SRCINFO_PATH
+sed -i "s/pkgrel = .*/pkgrel = 1/" $SRCINFO_PATH
 sed -i "s/sha256sums_x86_64 = ('.*')/sha256sums_x86_64 = $SHA256SUM/" $SRCINFO_PATH
 
 rm $APPIMAGE_NAME
