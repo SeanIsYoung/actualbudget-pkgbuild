@@ -5,7 +5,7 @@ _pkgname=actual
 _Pkgname=Actual
 
 pkgname=${_pkgname}-appimage
-pkgver=v24.11.0
+pkgver=v24.12.0
 pkgrel=2
 pkgdesc="Actual Budget is a local-first personal finance tool. It is 100% free and open-source, written in NodeJS, it has a synchronization element so that all your changes can move between devices without any heavy lifting."
 arch=('x86_64')
@@ -16,7 +16,7 @@ options=(!strip)
 _appimage="${_Pkgname}-linux.AppImage"
 source_x86_64=("${_appimage}::https://github.com/actualbudget/${_pkgname}/releases/download/${pkgver}/${_appimage}")
 noextract=("${_appimage}")
-sha256sums_x86_64=('f14211bc6df3cd57b25f7eaf6e2a6ecb0bed089fa50fd8460830b504d3793c35')
+sha256sums_x86_64=('f9be007f681f7feb6ad87a30f686fd2d39510ad03833c7c2be387e310afeda92')
 
 prepare() {
     chmod +x "${_appimage}"
