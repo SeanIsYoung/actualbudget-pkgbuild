@@ -1,6 +1,6 @@
 pkgbase = actual-appimage
 	pkgdesc = Actual Budget is a local-first personal finance tool. It is 100% free and open-source, written in NodeJS, it has a synchronization element so that all your changes can move between devices without any heavy lifting.
-	pkgver = v25.1.0
+	pkgver = v25.2.1
 	pkgrel = 1
 	url = https://actualbudget.org/
 	arch = x86_64
