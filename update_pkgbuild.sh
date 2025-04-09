@@ -6,7 +6,7 @@
 PKGBUILD_PATH="/home/dillan/Developer/actual-appimage/PKGBUILD"
 SRCINFO_PATH="/home/dillan/Developer/actual-appimage/.SRCINFO"
 REPO="actualbudget/actual"
-APPIMAGE_NAME="actual-linux.AppImage"
+APPIMAGE_NAME="actual-linux-x86_64.AppImage"
 
 # Get the latest release tag from GitHub
 LATEST_RELEASE=$(curl -s https://api.github.com/repos/$REPO/releases/latest | grep tag_name | cut -d '"' -f 4)
@@ -25,6 +25,7 @@ sed -i "s/sha256sums_x86_64=('.*')/sha256sums_x86_64=('$SHA256SUM')/" $PKGBUILD_
 # Update the .SRCINFO file
 sed -i "s/pkgver = .*/pkgver = $LATEST_RELEASE/" $SRCINFO_PATH
 sed -i "s/pkgrel = .*/pkgrel = 1/" $SRCINFO_PATH
+sed -i "s|\(.*download\)/.*/\(.*\)|\1/$LATEST_RELEASE/\2|" $SRCINFO_PATH
 sed -i "s/sha256sums_x86_64 = ('.*')/sha256sums_x86_64 = $SHA256SUM/" $SRCINFO_PATH
 
 rm $APPIMAGE_NAME
