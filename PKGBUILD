@@ -21,14 +21,30 @@ sha256sums_x86_64=('a13daf3f3df86b0bfe1f4dd2323aedf654bfd0c52134ab868ce267858d3b
 prepare() {
     chmod +x "${_appimage}"
     ./"${_appimage}" --appimage-extract
+
+    # Fix desktop entry to use a unique icon name
+    sed -i -E \
+        -e "s|Exec=AppRun|Exec=env DESKTOPINTEGRATION=false /usr/bin/${_pkgname}|" \
+        -e "s|Icon=desktop-electron|Icon=actual-budget|" \
+        "squashfs-root/desktop-electron.desktop"
+
+    # Rename all 'desktop-electron.png' icons to 'actual-budget.png' across all sizes
+    find squashfs-root/usr/share/icons/hicolor -type f -name 'desktop-electron.png' | while read -r icon_path; do
+        dir=$(dirname "$icon_path")
+        mv "$icon_path" "$dir/actual-budget.png"
+    done
+
+    # Fix permissions
+    chmod -R a-x+rX squashfs-root/usr
 }
 
 build() {
-    # Adjust .desktop so it will work outside of AppImage container
-    sed -i -E "s|Exec=AppRun|Exec=env DESKTOPINTEGRATION=false /usr/bin/${_pkgname}|"\
-        "squashfs-root/desktop-electron.desktop"
-    # Fix permissions; .AppImage permissions are 700 for all directories
-    chmod -R a-x+rX squashfs-root/usr
+    true
+#     # Adjust .desktop so it will work outside of AppImage container
+#     sed -i -E "s|Exec=AppRun|Exec=env DESKTOPINTEGRATION=false /usr/bin/${_pkgname}|"\
+#         "squashfs-root/desktop-electron.desktop"
+#     # Fix permissions; .AppImage permissions are 700 for all directories
+#     chmod -R a-x+rX squashfs-root/usr
 }
 
 package() {
