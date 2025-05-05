@@ -1,3 +1,5 @@
+derived from https://aur.archlinux.org/actual-appimage.git
+
 # Build notes
 - To build and install package
     - `makepkg -si`
