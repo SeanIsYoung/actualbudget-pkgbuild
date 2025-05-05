@@ -1,10 +1,13 @@
 #!/bin/bash
 
 # filepath: /home/dillan/Developer/actual-appimage/update_pkgbuild.sh
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+echo "SCRIPT_DIR: $SCRIPT_DIR"
 
 # Variables
-PKGBUILD_PATH="/home/dillan/Developer/actual-appimage/PKGBUILD"
-SRCINFO_PATH="/home/dillan/Developer/actual-appimage/.SRCINFO"
+PKGBUILD_PATH="$SCRIPT_DIR/PKGBUILD"
+SRCINFO_PATH="$SCRIPT_DIR/.SRCINFO"
 REPO="actualbudget/actual"
 APPIMAGE_NAME="actual-linux-x86_64.AppImage"
 
@@ -15,7 +18,7 @@ LATEST_RELEASE=$(curl -s https://api.github.com/repos/$REPO/releases/latest | gr
 curl -L -o $APPIMAGE_NAME https://github.com/$REPO/releases/download/$LATEST_RELEASE/$APPIMAGE_NAME
 
 # Calculate the sha256sum
-SHA256SUM=$(sha256sum $APPIMAGE_NAME | awk '{ print $1 }')
+SHA256SUM=$(sha256sum "$SCRIPT_DIR/$APPIMAGE_NAME" | awk '{ print $1 }')
 
 # Update the PKGBUILD file
 sed -i "s/pkgver=.*/pkgver=$LATEST_RELEASE/" $PKGBUILD_PATH
